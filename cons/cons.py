@@ -1,9 +1,12 @@
 import os
 import itertools
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
+PROJPATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), os.path.pardir))
 
-SAMPLES = open(os.path.join(PROJPATH, 'data', 'rosalind_cons.txt')).read().strip('\n').split()
+SAMPLES = open(os.path.join(
+    PROJPATH, 'data', 'rosalind_cons.txt')).read().strip('\n').split()
+
 
 def prof_matrix(strings):
     profs = dict.fromkeys('A C G T'.split(), None)
@@ -11,13 +14,15 @@ def prof_matrix(strings):
     for s in strings:
         for i, c in enumerate(s):
             if not profs[c]:
-                profs[c] = { i:0 for i in xrange(size) }
+                profs[c] = {i: 0 for i in xrange(size)}
             profs[c][i] = profs[c].get(i, 0) + 1
     return profs
+
 
 def print_prof_matrix(pmat):
     for c in sorted(pmat):
         print "%s: %s" % (c, " ".join([str(v) for k, v in sorted(pmat[c].items())]))
+
 
 def consensus(pmatrix):
     maxs = []
