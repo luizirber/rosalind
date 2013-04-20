@@ -2,7 +2,7 @@ import os
 
 PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
-SAMPLES = open(os.path.join(PROJPATH, 'data', 'rosalind_lcs.txt')).read().strip('\n').split()
+SAMPLES = open(os.path.join(PROJPATH, 'data', 'rosalind_lcsm.txt')).read().strip('\n').split()
 
 def lcs(s1, s2):
     L = {}
