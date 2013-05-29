@@ -10,31 +10,25 @@ TRANSLATION_TABLE = maketrans('ACGT', 'TGCA')
 with open(os.path.join(PROJPATH, 'data', 'rosalind_pcov.txt')) as f:
     DATA = f.readlines()
 
-dna_set = set(s[:-1] for s in DATA)
-reverse_complements = {s[::-1].translate(TRANSLATION_TABLE) for s in dna_set}
-dna_strings = dna_set | reverse_complements
+reads = {s[:-1] for s in DATA}
+reverse_complements = {s[::-1].translate(TRANSLATION_TABLE) for s in reads}
+dna_strings = reads | reverse_complements
 
 k = len(DATA[0][:-1]) - 1
-adj_list = {(r[0:k], r[1:k+1]) for r in dna_strings}
-
-candidates = set()
-for dna in dna_set:
-    for adj in sorted(adj_list):
-        if adj[0] in dna or adj[1] in dna:
-            candidates.add(adj)
+adj_list = {(head, tail)
+            for (head, tail) in {(r[0:k], r[1:k + 1]) for r in dna_strings}
+            if any(head in dna or tail in dna for dna in dna_strings)}
 
 superstring = []
-c = candidates.pop()
-while candidates:
-    if not superstring:
-        superstring.append(c[0][k-1:])
-    superstring.append(c[1][k-1:])
+c = adj_list.pop()
+while adj_list:
+    superstring.append(c[1][k - 1:])
 
-    adj = {n for n in candidates if n[0] == c[1]}
-    if adj:
-        c = (candidates & adj).pop()
-        candidates.remove(c)
+    next_edge = {n for n in adj_list if n[0] == c[1]}
+    if next_edge:
+        c = (adj_list & next_edge).pop()
+        adj_list.remove(c)
     else:
-        candidates = None
+        adj_list = None
 
 print "".join(superstring)
