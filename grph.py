@@ -1,35 +1,24 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
-from collections import OrderedDict
+
+from revp import read_fasta
 
 
-def read_fasta(filename):
-    seqs = OrderedDict()
-    with open(filename) as fp:
-        current = None
-        buff = []
-        for line in fp:
-            if line.startswith('>'):
-                if current:
-                    seqs[current] = ''.join(buff).strip()
-                    buff = []
-                current = line[:-1]
-            else:
-                buff.append(line[:-1])
-        seqs[current] = ''.join(buff).strip()
-    return seqs
+def adjacency_list(seqs):
+    output = []
+    for seq in seqs:
+        seq_end = seqs[seq][-3:]
+        adjs = set(seqs.keys())
+        adjs.remove(seq)
+        for adj in adjs:
+            if seq_end == seqs[adj][:3]:
+                output.append("%s %s" % (seq[1:], adj[1:]))
+    return output
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
-seqs = read_fasta(os.path.join(PROJPATH, 'data', 'rosalind_grph.txt'))
-
-output = []
-for seq in seqs:
-    seq_end = seqs[seq][-3:]
-    adjs = seqs.keys()
-    adjs.remove(seq)
-    for adj in adjs:
-        if seq_end == seqs[adj][:3]:
-            output.append("%s %s" % (seq[1:], adj[1:]))
-
-print "\n".join(output)
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_grph.txt')) as dataset:
+        seqs = read_fasta(dataset)
+        print(*adjacency_list(seqs), sep="\n")

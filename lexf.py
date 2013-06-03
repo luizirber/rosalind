@@ -1,17 +1,15 @@
-from itertools import product
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
+from itertools import product
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
-SAMPLES = open(os.path.join(PROJPATH, 'data', 'rosalind_lexf.txt')).readlines()
+def lexf_order(size, alphabet='TAGC'):
+    return [''.join(p) for p in product(alphabet, repeat=size)]
 
-alphabet = SAMPLES[0][:-1].split()
-n = int(SAMPLES[1][:-1])
 
-output = []
-for p in product(alphabet, repeat=n):
-    for i in p:
-        output.append(i)
-    output.append('\n')
-
-print "".join(output[:-1])
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_lexf.txt')) as dataset:
+        alphabet, size = dataset.readlines()
+        print(*lexf_order(int(size), alphabet.rstrip().split()), sep='\n')

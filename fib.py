@@ -1,23 +1,24 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
-memo = {}
-def fib(n, k):
+
+def fib(n, k, fib_memo={}):
     args = (n, k)
-    if args in memo:
-        return memo[args]
+    if args in fib_memo:
+        return fib_memo[args]
 
     if n == 1 or n == 2:
         ans = 1
     else:
-        ans = fib(n - 2, k) * k + fib(n - 1, k)
+        ans = fib(n - 2, k, fib_memo) * k + fib(n - 1, k, fib_memo)
 
-    memo[args] = ans
+    fib_memo[args] = ans
     return ans
 
 
-PROJPATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), os.path.pardir))
-
-N, K = open(os.path.join(PROJPATH, 'data', 'rosalind_fib.txt')).read().split()
-
-print fib(int(N), int(K))
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_fib.txt')) as dataset:
+        n, k = dataset.read().split()
+        print(fib(int(n), int(k)))

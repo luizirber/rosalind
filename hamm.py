@@ -1,12 +1,16 @@
-from itertools import starmap, izip
-import operator
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
+from itertools import starmap
+import operator
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
-
-SAMPLES = open(os.path.join(PROJPATH, 'data', 'rosalind_hamm.txt')).readlines()
 
 def hamming(s1, s2):
-    return sum(starmap(operator.ne, izip(s1, s2)))
+    return sum(starmap(operator.ne, zip(s1, s2)))
 
-print hamming(SAMPLES[0], SAMPLES[1])
+
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_hamm.txt')) as dataset:
+        s, t = dataset.readlines()
+        print(hamming(s.rstrip(), t.rstrip()))

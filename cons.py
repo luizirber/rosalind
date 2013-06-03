@@ -1,11 +1,9 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
-import itertools
 
-PROJPATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), os.path.pardir))
-
-SAMPLES = open(os.path.join(
-    PROJPATH, 'data', 'rosalind_cons.txt')).read().strip('\n').split()
+from revp import read_fasta
 
 
 def prof_matrix(strings):
@@ -14,14 +12,14 @@ def prof_matrix(strings):
     for s in strings:
         for i, c in enumerate(s):
             if not profs[c]:
-                profs[c] = {i: 0 for i in xrange(size)}
+                profs[c] = {i: 0 for i in range(size)}
             profs[c][i] = profs[c].get(i, 0) + 1
     return profs
 
 
 def print_prof_matrix(pmat):
     for c in sorted(pmat):
-        print "%s: %s" % (c, " ".join([str(v) for k, v in sorted(pmat[c].items())]))
+        print("%s: %s" % (c, " ".join([str(v) for k, v in sorted(pmat[c].items())])))
 
 
 def consensus(pmatrix):
@@ -35,6 +33,10 @@ def consensus(pmatrix):
         maxs.append(mk)
     return "".join(maxs)
 
-pmat = prof_matrix(SAMPLES)
-print consensus(pmat)
-print_prof_matrix(pmat)
+
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_cons.txt')) as dataset:
+        seqs = read_fasta(dataset)
+        pmat = prof_matrix([seqs[k] for k in seqs])
+        print(consensus(pmat))
+        print_prof_matrix(pmat)

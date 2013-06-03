@@ -1,19 +1,27 @@
-from string import maketrans
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
-TABLE = open('codon_table').read()
-SAMPLE = open(os.path.join(PROJPATH, 'data', 'rosalind_prot.txt')).read()[:-1]
+def prepare_codon_table(filename):
+    with open(filename) as data:
+        codon_data = data.read().split()
+    return dict(zip(codon_data[::2], codon_data[1::2]))
 
-codon_data = TABLE.split()
-codon_table = dict(zip(codon_data[::2], codon_data[1::2]))
 
-output = []
-for codon in (SAMPLE[i:i+3] for i in xrange(0, len(SAMPLE), 3)):
-    if codon_table[codon] == 'Stop':
-        break
-    else:
-        output.append(codon_table[codon])
+def protein_encoding(rna):
+    codon_table = prepare_codon_table(os.path.join('data', 'codon_table'))
+    output = []
+    for codon in (rna[i:i + 3] for i in range(0, len(rna), 3)):
+        if codon_table[codon] == 'Stop':
+            break
+        else:
+            output.append(codon_table[codon])
 
-print "".join(output)
+    return "".join(output)
+
+
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_prot.txt')) as dataset:
+        print(protein_encoding(dataset.read().rstrip()))

@@ -1,28 +1,20 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
+from revp import read_fasta
+
 
 def gc_content(seq):
     count = seq.count('C') + seq.count('G')
     return float(count) / len(seq)
 
-def read_fasta(filename):
-    seqs = {}
-    with open(filename) as fp:
-        current = None
-        buff = []
-        for line in fp:
-            if line.startswith('>'):
-                if current:
-                    seqs[current] = ''.join(buff).strip()
-                    buff = []
-                current = line[:-1]
-            else:
-                buff.append(line[:-1])
-        seqs[current] = ''.join(buff).strip()
-    return seqs
 
-seqs = read_fasta(os.path.join(PROJPATH, 'data', 'rosalind_gc.txt'))
-maxes = max(map(gc_content, seqs.values()), seqs.keys())
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_gc.txt')) as dataset:
+        seqs = read_fasta(dataset)
+        gc = {k: gc_content(seqs[k]) for k in seqs}
+        maxes = max(gc)
 
-print maxes[0][1:], "%.6f%%" % (gc_content(seqs[maxes[0]]) * 100)
+        print(maxes[1:], "\n%.2f%%" % (round(gc[maxes] * 100, 2)))

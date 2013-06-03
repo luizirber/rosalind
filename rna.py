@@ -1,7 +1,13 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
-SAMPLE = open(os.path.join(PROJPATH, 'data', 'rosalind_rna.txt')).read()
+def rna_transcription(dna):
+    return dna.replace('T', 'U')
 
-print SAMPLE.replace('T', 'U')
+
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_rna.txt')) as dataset:
+        print(rna_transcription(dataset.read()))
