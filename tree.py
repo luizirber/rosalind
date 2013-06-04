@@ -1,13 +1,11 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
-
-with open(os.path.join(PROJPATH, 'data', 'rosalind_tree.txt')) as f:
-    DATA = f.readlines()
-
-n = int(DATA[0][:-1])
-adjlist = [map(int, d.split()) for d in DATA[1:]]
-
-print n - (len(adjlist) + 1)
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_tree.txt')) as dataset:
+        n = int(dataset.readline().rstrip())
+        adjlist = [map(int, d.split()) for d in dataset]
+        print(n - (len(adjlist) + 1))

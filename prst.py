@@ -1,17 +1,16 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 from Bio.ExPASy import ScanProsite
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_prst.txt')) as dataset:
+        protein_string = dataset.readline().rstrip()
 
-with open(os.path.join(PROJPATH, 'data', 'rosalind_prst.txt')) as f:
-    DATA = f.read()
+    handle = ScanProsite.scan(protein_string)
+    result = ScanProsite.read(handle)
 
-protein_string = DATA[:-1]
-
-handle = ScanProsite.scan(protein_string)
-result = ScanProsite.read(handle)
-
-print sorted(result, key=lambda x: x['start'])[-1]['signature_ac']
+    print(sorted(result, key=lambda x: x['start'])[-1]['signature_ac'])

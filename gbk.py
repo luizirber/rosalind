@@ -1,22 +1,22 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 from Bio import Entrez
 Entrez.email = "luiz.irber@gmail.com"
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_gbk.txt')) as dataset:
+        genus = dataset.readline().rstrip()
+        begin = dataset.readline().rstrip()
+        end = dataset.readline().rstrip()
 
-with open(os.path.join(PROJPATH, 'data', 'rosalind_gbk.txt')) as f:
-    DATA = f.readlines()
+    handle = Entrez.esearch(
+        db='nucleotide',
+        term='"%s"[Organism] AND "%s"[PDAT]:"%s"[PDAT]' % (
+            genus, begin, end))
 
-genus = DATA[0][:-1]
-begin = DATA[1][:-1]
-end = DATA[2][:-1]
-
-handle = Entrez.esearch(
-            db='nucleotide',
-            term='"%s"[Organism] AND "%s"[PDAT]:"%s"[PDAT]' % (genus, begin, end))
-
-record = Entrez.read(handle)
-print record["Count"]
+    record = Entrez.read(handle)
+    print(record["Count"])

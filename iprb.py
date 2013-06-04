@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 
@@ -8,11 +11,11 @@ def prob(k, m, n):
     p['m'] = m / population
     p['n'] = n / population
 
-    p['kk'] = k / population * (k-1) / (population - 1)
+    p['kk'] = k / population * (k - 1) / (population - 1)
     p['km'] = k / population * m / (population - 1) * 2
-    p['mm'] = m / population * (m-1) / (population - 1)
+    p['mm'] = m / population * (m - 1) / (population - 1)
     p['mn'] = m / population * n / (population - 1) * 2
-    p['nn'] = n / population * (n-1) / (population - 1)
+    p['nn'] = n / population * (n - 1) / (population - 1)
     p['kn'] = k / population * n / (population - 1) * 2
 
     p['k|kk'] = 1
@@ -48,9 +51,8 @@ def prob(k, m, n):
     return pk
 
 
-PROJPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_iprb.txt')) as dataset:
+        k, m, n = map(int, dataset.read().split())
 
-DATA = open(os.path.join(PROJPATH, 'data', 'rosalind_iprb.txt')).read()
-k, m, n = map(int, DATA.split())
-
-print prob(k, m, n)
+        print(prob(k, m, n))

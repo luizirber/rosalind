@@ -1,13 +1,11 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
-
-with open(os.path.join(PROJPATH, 'data', 'rosalind_ini3.txt')) as f:
-    DATA = f.readlines()
-
-s = DATA[0][:-1]
-a, b, c, d = map(int, DATA[1].split())
-
-print s[a:b + 1], s[c:d + 1]
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_ini3.txt')) as dataset:
+        s = dataset.readline().rstrip()
+        a, b, c, d = map(int, dataset.readline().split())
+        print(s[a:b + 1], s[c:d + 1])

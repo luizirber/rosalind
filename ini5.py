@@ -1,12 +1,12 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
-
-with open(os.path.join(PROJPATH, 'data', 'rosalind_ini5.txt')) as f:
-    DATA = f.readlines()
-
-for i, line in enumerate(DATA):
-    if i % 2 == 1:
-        print line,
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_ini5.txt')) as dataset:
+        DATA = dataset.readlines()
+        for i, line in enumerate(DATA):
+            if i % 2 == 1:
+                print(line, end='')

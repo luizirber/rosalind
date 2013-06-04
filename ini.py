@@ -1,13 +1,12 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 from Bio.Seq import Seq
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
-
-with open(os.path.join(PROJPATH, 'data', 'rosalind_ini.txt')) as f:
-    DATA = f.read()
-
-seq = Seq(DATA[:-1])
-print seq.count('A'), seq.count('C'), seq.count('G'), seq.count('T')
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_ini.txt')) as dataset:
+        seq = Seq(dataset.read().rstrip())
+        print(*list(map(seq.count, ('A', 'C', 'G', 'T'))))
