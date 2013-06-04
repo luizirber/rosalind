@@ -1,17 +1,15 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
 import os
 
 from Bio.Seq import translate
 
 
-PROJPATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir))
+if __name__ == "__main__":
+    with open(os.path.join('data', 'rosalind_ptra.txt')) as dataset:
+        dna_string = dataset.readline().rstrip()
+        protein_string = dataset.readline().rstrip()
 
-
-with open(os.path.join(PROJPATH, 'data', 'rosalind_ptra.txt')) as f:
-    DATA = f.readlines()
-
-dna_string = DATA[0][:-1]
-protein_string = DATA[1][:-1]
-
-translation = translate(dna_string)
-print translation.find(protein_string) + 1
+    translation = translate(dna_string)
+    print(translation.find(protein_string) + 1)
