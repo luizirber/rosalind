@@ -20,5 +20,5 @@ def fib(n, k, fib_memo={}):
 
 if __name__ == "__main__":
     with open(os.path.join('data', 'rosalind_fib.txt')) as dataset:
-        n, k = dataset.read().split()
-        print(fib(int(n), int(k)))
+        n, k = [int(r) for r in dataset.read().split()]
+        print(fib(n, k))

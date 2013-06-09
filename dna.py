@@ -5,7 +5,7 @@ import os
 
 
 def dna_count(dna, order='ACGT'):
-    return map(dna.count, order)
+    return [dna.count(o) for o in order]
 
 
 if __name__ == "__main__":

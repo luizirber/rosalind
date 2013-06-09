@@ -3,13 +3,12 @@
 from __future__ import print_function, division
 import os
 from itertools import permutations, product
-import operator
 
 
 def signed_permutation(n):
-    for p in permutations(range(1, n + 1), n):
+    for perm in permutations(range(1, n + 1), n):
         for mask in product((-1, 1), repeat=n):
-            yield tuple(map(operator.mul, p, mask))
+            yield [p * m for p, m in zip(perm, mask)]
 
 
 if __name__ == "__main__":

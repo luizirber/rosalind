@@ -53,6 +53,6 @@ def prob(k, m, n):
 
 if __name__ == "__main__":
     with open(os.path.join('data', 'rosalind_iprb.txt')) as dataset:
-        k, m, n = map(int, dataset.read().split())
+        k, m, n = [int(r) for r in dataset.read().split()]
 
         print(prob(k, m, n))

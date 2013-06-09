@@ -2,12 +2,10 @@
 
 from __future__ import print_function
 import os
-from itertools import starmap
-import operator
 
 
 def hamming(s1, s2):
-    return sum(starmap(operator.ne, zip(s1, s2)))
+    return sum(s1 != s2 for s1, s2 in zip(s1, s2))
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ def prob_at(gc_cont):
 if __name__ == "__main__":
     with open(os.path.join('data', 'rosalind_prob.txt')) as dataset:
         dna = dataset.readline().rstrip().upper()
-        gc_contents = list(map(float, dataset.readline().rstrip().split()))
+        gc_contents = [float(r) for r in dataset.readline().rstrip().split()]
 
     output = []
     for gc_cont in gc_contents:

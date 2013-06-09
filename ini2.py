@@ -6,5 +6,5 @@ import os
 
 if __name__ == "__main__":
     with open(os.path.join('data', 'rosalind_ini2.txt')) as dataset:
-        a, b = map(int, dataset.read().split())
+        a, b = [int(r) for r in dataset.readline().rstrip().split()]
         print((a ** 2) + (b ** 2))

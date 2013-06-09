@@ -14,5 +14,5 @@ def partial_permutation(n, k):
 
 if __name__ == "__main__":
     with open(os.path.join('data', 'rosalind_pper.txt')) as dataset:
-        n, k = map(int, dataset.readline().rstrip().split())
+        n, k = [int(r) for r in dataset.readline().rstrip().split()]
         print(int(partial_permutation(n, k)))

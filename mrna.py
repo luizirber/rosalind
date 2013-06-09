@@ -21,4 +21,4 @@ if __name__ == "__main__":
                                   if codon_table[c] == p])
 
         print((len(stop_codons) * reduce(operator.mul,
-                                         map(len, possibilities))) % 1000000)
+                                         (len(p) for p in possibilities))) % 1000000)
