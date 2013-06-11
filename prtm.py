@@ -8,7 +8,7 @@ from prot import prepare_codon_table
 
 def prepare_mass_table(filename):
     table = prepare_codon_table(filename)
-    return {k: float(table[k]) for k in table}
+    return {k: round(float(table[k]), 5) for k in table}
 
 
 def protein_weight(protein):
