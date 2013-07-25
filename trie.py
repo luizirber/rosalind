@@ -2,14 +2,7 @@
 
 from __future__ import print_function
 import os
-
-
-def flatten(seq):
-    output = []
-    for s1, s2 in seq:
-        output.append(s1)
-        output.append(s2)
-    return output
+from itertools import chain
 
 
 def add_word(trie, word):
@@ -18,7 +11,7 @@ def add_word(trie, word):
         for n, letter in enumerate(word, 1):
             trie[(n, n + 1)] = letter
     else:
-        max_vertex = max(flatten([e for e in trie]))
+        max_vertex = max(chain.from_iterable(e for e in trie))
         edges = {trie[e]: e for e in trie if e[0] == 1}
         for letter in word:
             if letter in edges:
@@ -48,7 +41,8 @@ def write_dot(adj_list):
     with open('output.dot', 'w') as output:
         output.write('digraph trie {\n')
         for b, e in adj_list:
-            line = '{0} -> {1} [ label = "{2}" ];\n'.format(b, e, adj_list[(b, e)])
+            line = '{0} -> {1} [ label = "{2}" ];\n'.format(
+                b, e, adj_list[(b, e)])
             output.write(line)
         output.write('}\n')
 

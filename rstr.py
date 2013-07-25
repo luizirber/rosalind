@@ -8,15 +8,22 @@ from prob import prob_gc, prob_at
 
 
 def prob_none_equal(N, dna, x):
+    prob = 1
+    for p in prob_equal(dna, x):
+        prob *= p
+    return (1 - prob) ** N
+
+
+def prob_equal(dna, x):
     prb_gc = prob_gc(x)
     prb_at = prob_at(x)
-    prob = 1  # probability that we have the same string
     for base in dna:
-        if base in ('A', 'T'):
-            prob *= prb_at
+        if base in 'AT':
+            yield prb_at
+        elif base in 'GC':
+            yield prb_gc
         else:
-            prob *= prb_gc
-    return (1 - prob) ** N
+            yield 0
 
 
 if __name__ == "__main__":
