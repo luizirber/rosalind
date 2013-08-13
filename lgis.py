@@ -9,16 +9,16 @@ def lgs(seq, op=operator.lt):
     L = [0] * len(seq)
     P = [None] * len(seq)
 
+    max_length = 0
     for i in range(len(seq)):
         it = ((L[j] + 1 if op(seq[j], seq[i]) else 1) for j in range(i + 1))
         P[i], L[i] = max(enumerate(it, 0), key=operator.itemgetter(1))
-
-    for i, v in enumerate(L):
-        if v == 1:
+        if L[i] == 1:
             P[i] = -1
+        if L[i] >= max_length:
+            pos, max_length = i, L[i]
 
     ls = []
-    pos = L.index(max(L))
     while pos > -1:
         ls.append(seq[pos])
         pos = P[pos]
