@@ -2,89 +2,32 @@
 
 from __future__ import print_function
 
-from collections import defaultdict
 
-
-def write_dot(adj_list):
-    '''
-    digraph sample2 {
-    A -> B [ label = "Edge A to B" ];
-    B -> C [ label = "Edge B to C" ];
-    A [label="Node A"];
-    }'''
-    with open('output.dot', 'w') as output:
-        output.write('digraph trie {\n')
-        for b in adj_list:
-            for e, letter in adj_list[b]:
-                line = '{0} -> {1} [ label = "{2}" ];\n'.format(b, e, letter)
-                output.write(line)
-        output.write('}\n')
-
-
-def suffix_trie(text):
-    adj_list = defaultdict(list)
-    node_props = {}
-    root = 1
-    last_node = root
-
-    for i in reversed(range(len(text))):
-        current_node = 1
-        for ch in text[i:]:
-            node = next((node for (node, letter)
-                              in adj_list[current_node]
-                              if letter == ch), None)
-            if node:
-                current_node = node
-            else:
-                last_node += 1
-                adj_list[current_node].append((last_node, ch))
-                current_node = last_node
-
-            #if ch == '$':
-            #    node_props[current_node] = i
-
-    return adj_list, None #, node_props
-
-
-def backtrace(parent, start, end):
-    path = [end]
-    while path[-1] != start:
-        path.append(parent[path[-1]])
-    path.reverse()
-    return path
+from suftree import suffix_tree, str_from_path, path_to_root
 
 
 def find_longest_repeat(text):
-    suf_trie, _ = suffix_trie(text + '$')
-    branches = [node for node in suf_trie
-                if len(suf_trie[node]) > 1 and (node != 1)]
-    start = 1
-    parent = {}
+    suf_tree = suffix_tree(text + '$')
+    candidates = []
+
+    start = suf_tree
     queue = []
     queue.append(start)
-    longest_path = []
     while queue:
         node = queue.pop(0)
-        if not branches:
-            break
+        for key, (_, v) in node.children.items():
+            queue.append(v)
+        if len(node.children) > 1:
+            candidates.append(node)
 
-        for adjacent, letter in suf_trie.get(node, []):
-            parent[adjacent] = node
-            queue.append(adjacent)
-        if node in branches:
-            new_path = backtrace(parent, start, node)
-            if len(new_path) > len(longest_path):
-                longest_path = new_path
-            branches.remove(node)
+    longest = ""
+    for c in candidates:
+        c_str = str_from_path(path_to_root(c, suf_tree), text)
+        if len(c_str) > len(longest):
+            longest = c_str
 
-    longest = []
-    for start, end in zip(longest_path[:-1], longest_path[1:]):
-        for node, letter in suf_trie[start]:
-            if node == end:
-                longest.append(letter)
-                break
+    return longest
 
-    return "".join(longest)
 
 if __name__ == "__main__":
     with open('data/rosalind_7c.txt', 'r') as dataset:
